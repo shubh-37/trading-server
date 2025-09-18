@@ -3,6 +3,8 @@ const app = express();
 const connectDB = require("./connect");
 const axios = require("axios");
 const redis = require("redis");
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Middleware
 app.use(express.json());
