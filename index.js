@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
  function parseSymbol(symbol) {
     // Extract base name, date, and strike price
     // Example: NIFTY250930P25200 -> { base: 'NIFTY250930', type: 'P', strike: '25200' }
-    const regex = /^(.+?)([PC])(\d+)$/;
+    const regex = /^(.+?)([PC])(\d+(?:\.\d+)?)$/;
     const match = symbol.match(regex);
 
     if (!match) {
@@ -276,26 +276,6 @@ app.get("/", (req, res) => {
     } catch (error) {
       console.error('Error processing trading signal:', error);
       return reply.status(500).send({ status: 'error', message: error.message });
-    }
-  });
-
-  // Optional: Add endpoint to check current holdings
-  app.get('/holdings', async (req, res) => {
-    try {
-      const holdings = await Models.Trade.find({ status: 'Holding' });
-      return res.json({ holdings });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  });
-
-  // Optional: Add endpoint to check trade history
-  app.get('/trades', async (req, res) => {
-    try {
-      const trades = await Models.Trade.find().sort({ createdAt: -1 });
-      return res.json({ trades });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
     }
   });
 
